@@ -46,40 +46,11 @@ rpp_pval_pubbias<-sapply(1:nrow(RPP_filtered),function(x)
   PRP_MCMC(beta=c(beta_orig[x], beta_rep[x]),
               se=c(se_orig[x], se_rep[x]), k_vec=root_vec))
 
-# ## default ts DC v.s. D
-# rpp_ts=data.frame(priorPRP=rep(c("original","MCMC"),each=nrow(RPP_filtered)),rep_pval=c(rpp_pval_ref,rpp_pval))
-# pdf(file = paste0("rpp_pval_default_ts.pdf"),width=6,height=5)
-# ggplot(rpp_ts,aes(x=rep_pval))+
-#   geom_histogram(aes(fill=priorPRP),color="white",bins=15,alpha=0.5,boundary=0,position = 'identity')+
-#   scale_x_continuous(limits = c(0, 1))+
-#   scale_fill_manual("Criterion",labels=c("Distinguishability","DC"),values=c("#69b3a2", "#404080"))+
-#   xlab(expression(p["prior"]))+
-#   theme_bw()
-# dev.off()
-
-# 
-# ## publication bias ts DC v.s. D
-# rpp_1=data.frame(priorPRP=rep(c("original","MCMC"),each=nrow(RPP_filtered)),rep_pval=c(rpp_pval_pubbias_ref,rpp_pval_pubbias))
-# 
-# pdf(file = paste0("rpp_pval_pubbias_ts.pdf"),width=6,height=5)
-# ggplot(rpp_1,aes(x=rep_pval))+
-#   geom_histogram(aes(fill=priorPRP),color="white",bins=20,alpha=0.5,boundary=0,position = 'identity')+
-#   scale_x_continuous(limits = c(0, 1))+
-#   scale_fill_manual("Criterion",labels=c("DC","Distinguishability"),values=c("#69b3a2", "#404080"))+
-#   xlab(expression(p["prior"]))+
-#   theme_bw()
-# dev.off()
-
-# 
-# pdf(file = paste0("rpp_comp.pdf"),width=6,height=6.5)
-# plot(rpp_pval_ref,rpp_pval,xlab=expression(P[prior]~-~DC),ylab=expression(P[prior]~-~Distinguishability),col="blue")
-# abline(c(0,0),c(1,1))
-# dev.off()
 
 ## Distingsuihability default vs publication bias ts
 rpp_d=data.frame(test_statistics=rep(c("default","MCMC"),each=nrow(RPP_filtered)),rep_pval=c(rpp_pval,rpp_pval_pubbias))
 
-pdf(file = paste0("rpp_pval_default_vs_pubbias.pdf"),width=6,height=5)
+pdf(file = paste0("plots/rpp_pval_default_vs_pubbias.pdf"),width=6,height=5)
 ggplot(rpp_d,aes(x=rep_pval))+
   geom_histogram(aes(fill=test_statistics),color="white",bins=10,alpha=0.5,boundary=0,position = 'identity')+
   scale_x_continuous(limits = c(0, 1))+
@@ -113,7 +84,7 @@ data<- data_new[order(data_new$pval,decreasing = T),]
 data$Study2<- factor(data$Study,as.character(data$Study))
 data$significance = as.factor((data$pval>0.05)+0)
 
-pdf(file = paste0("rpp_PI_MCMC.pdf"),width=7,height=8.5)
+pdf(file = paste0("plots/rpp_PI_MCMC.pdf"),width=7,height=8.5)
 ggplot(data)+
   geom_pointrange(aes(x=Study2, y=orig, ymin=PIlow, ymax=PIhigh),color="darkblue",shape=3,fatten=2)+
   geom_hline(yintercept = 0, linetype=2)+

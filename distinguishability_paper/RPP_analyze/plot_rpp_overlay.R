@@ -66,14 +66,16 @@ data_dc<-data.frame(cbind("Study"=RPP_filtered[,1],"orig" =RPP_filtered[,2] ,
 data_dc$significance = as.factor((data_dc$pval>0.05)+0)
 
 
+### combined
+
 data_new <-cbind(rbind(data_jeff,data_dc,data_D),type=rep(c("Patil et al PI","DC PI","Distinguishability PI"),each=nrow(data_dc)))
 
 data_new$Study <-factor(data_new$Study, levels=data_D$Study)
 data_new$type<-factor(data_new$type, levels=c("Distinguishability PI","Patil et al PI","DC PI"))
 
 
-#### overlay plot
-pdf(file = paste0("rpp_overlay.pdf"),width=9,height=8.5)
+### overlay plotting
+pdf(file = paste0("plots/rpp_overlay.pdf"),width=9,height=8.5)
 ggplot(data_new)+
   geom_pointrange(aes(x=Study, y=orig, ymin=PIlow, ymax=PIhigh),color="darkblue",shape=3,fatten=2)+
   geom_hline(yintercept = 0, linetype=2)+
